@@ -6,7 +6,7 @@ const json = JSON.stringify(JSON.parse(fs.readFileSync('key.json', 'utf-8')));
 const req = https.request({
     hostname: 'rua.kr',
     port: 443,
-    path: '/post.php',
+    path: '/servlet/ddns.php',
     method: 'POST',
     headers: {
          'Content-Type': 'text/json',
