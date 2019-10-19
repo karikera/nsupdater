@@ -7,12 +7,12 @@ const key = JSON.parse(fs.readFileSync('key.json', 'utf-8'));
 
 if ('adapter' in key)
 {
+    delete key.address;
+    
     const ifaces = os.networkInterfaces();
     const adapters = ifaces[key.adapter];
     if (adapters)
     {
-        delete key.address;
-        delete key.adapter;
         if (key.family)
         {
             for (const adapter of adapters)
@@ -31,11 +31,12 @@ if ('adapter' in key)
         }
     }
     
-    if (key.address)
+    if (!key.address)
     {
         console.error('Adapter not found: '+key.adapter);
         process.exit(ENOENT);
     }
+    delete key.adapter;
 }
 
 const json = JSON.stringify(key);
