@@ -8,13 +8,30 @@ const key = JSON.parse(fs.readFileSync('key.json', 'utf-8'));
 if ('adapter' in key)
 {
     const ifaces = os.networkInterfaces();
-    const adapter = ifaces[key.adapter];
-    if (adapter)
+    const adapters = ifaces[key.adapter];
+    if (adapters)
     {
+        delete key.address;
         delete key.adapter;
-        key.address = adapter[0].address;
+        if (key.family)
+        {
+            for (const adapter of adapters)
+            {
+                if (adapter.family == key.family)
+                {
+                    key.address = adapter.address;
+                    break;
+                }
+            }
+            delete key.family;
+        }
+        else
+        {
+            key.address = adapters[0].address;
+        }
     }
-    else
+    
+    if (key.address)
     {
         console.error('Adapter not found: '+key.adapter);
         process.exit(ENOENT);
