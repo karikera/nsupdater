@@ -1,9 +1,10 @@
 import https = require('https');
 import fs = require('fs');
 import os = require('os');
+import path = require('path');
 import { ENOENT } from 'constants';
 
-const key = JSON.parse(fs.readFileSync('key.json', 'utf-8'));
+const key = JSON.parse(fs.readFileSync(__dirname+path.sep+'key.json', 'utf-8'));
 
 if ('adapter' in key)
 {
